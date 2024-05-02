@@ -1,0 +1,73 @@
+---
+title: "wheresit"
+author: "erika steiner"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Where Sit
+
+## Objective
+
+Create an office seating chart for each day of the week based on staff's preferences and a set of constraints.
+
+## Constraints
+
+-   There are 30 desks available each day.
+
+    -   12 desks are in the "dark" zone, 12 desks are in the "light" zone, and 6 desks are in the "twilight" zone (darkness)/
+
+    -   10 desks are against the "window", 10 desks are in the "aisle", and 10 desks are "middle" seats (row position)/
+
+-   There are 38 staff members.
+
+    -   Each staff member has unique preferences for where they sit (darkness and row position), with different weighting for different factors
+
+        -   Each staff member is required to come in 1 or 2 days/wk; these are usually the same days each week.
+        -   Folks coming in 2 days/wk would likely desire to stay at the same desk for both days, although this could be argued.
+
+-   Only one person can sit at a desk at a time.
+
+    -   There may be days with insufficient desks for the number of people interested in coming in.
+
+-   Preference ranking (i.e., in a tie, who wins) is based on prior attendance data, which has been externally calculated
+
+### Things I'm ignoring for now
+
+-   Proximity to teammates
+    -   True both in physical proximity and day preference proximity
+-   Proximity to entrance/exit/bathrooms/kitchen/etc.; fixed physical location in lab
+-   Accommodations
+    -   I imagine these folks would go through a preliminary selection process; we would simply remove them as desk selectors and remove their desk as an option
+-   **The Simple Option**:
+    -   The first 30 staff members rank each available desk (yep, all 30).
+    -   Using the "toptrading()" function from the matchingR package, assign those 30 members a desk.
+    -   The subsequent 8 staff members can then fill in wherever there is availability (as earlier staff reveal which days they don't intend to be in office).
+    -   *The problem with this option:* Some of the initial 30 staff members may prefer to share a desk over getting their own desk, if the shared desk better aligns with their preferences.
+        -   Adding on to this: this option doesn't consider days-in-office. Thus, simple option 2.
+-   **Simple Option 2:**
+    -   For each day of the week, staff members planning to come in on that day rank each available desk (all 30, unless there are only x number of people coming in, in which case they only need to rank the top x desks).
+        -   If there are fewer than 30 people coming in, the toptrading() function will not work. As a result, we'll have to use a for-loop function.
+    -   *The problem with this option:* Doing each day's assignment independently may result in people having to change desks from day to day. Some folks may prefer having the same desk every day they come in over having a certain desk.
+-   Simple Question 1 and 2 require granular desk selection (i.e. a preference for a specific desk, rather than a desk which meets certain qualifications), which may not be feasible?
+
+## Major Tasks
+
+-   Gather preferences (Data Input)
+
+    -   Identify which days of the week a staff member plans to come in, their preferred darkness, and their preferred row position
+
+    -   Weigh preferences according to organizational importance and staff member's personal preference
+
+        -   i.e. Days of the week would always be highest, but darkness/row position may be different for each person
+            -   Someone may prioritize a window over the dark side, or being on the light side over an aisle seat
+
+-   Create/deploy an algorithm which maximizes the number of people in desks which meet their preferences
+
+    -   Algorithm must consider each staff's preference and corresponding desk utility
+
+    -   Algorithm must accept that there are more desks than are needed in sum (30 desks x 5 days \> 38 staff x 2 days), but fewer desks than may be needed on any given day
+
+-   Create seating assignments for each day of the week (Data Output)
+
+-   Create seating charts for each day of the week (Visualization)
