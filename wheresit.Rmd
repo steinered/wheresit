@@ -32,30 +32,23 @@ Create an office seating chart for each day of the week based on staff's prefere
 
 -   Preference ranking (i.e., in a tie, who wins) is based on prior attendance data, which has been externally calculated
 
-### Things I'm ignoring for now
+-   There may be a preference for proximity to teammates
 
--   Proximity to teammates
     -   True both in physical proximity and day preference proximity
--   Proximity to entrance/exit/bathrooms/kitchen/etc.; fixed physical location in lab
--   Accommodations
-    -   I imagine these folks would go through a preliminary selection process; we would simply remove them as desk selectors and remove their desk as an option
--   **The Simple Option**:
-    -   The first 30 staff members rank each available desk (yep, all 30).
-    -   Using the "toptrading()" function from the matchingR package, assign those 30 members a desk.
-    -   The subsequent 8 staff members can then fill in wherever there is availability (as earlier staff reveal which days they don't intend to be in office).
-    -   *The problem with this option:* Some of the initial 30 staff members may prefer to share a desk over getting their own desk, if the shared desk better aligns with their preferences.
-        -   Adding on to this: this option doesn't consider days-in-office. Thus, simple option 2.
--   **Simple Option 2:**
-    -   For each day of the week, staff members planning to come in on that day rank each available desk (all 30, unless there are only x number of people coming in, in which case they only need to rank the top x desks).
-        -   If there are fewer than 30 people coming in, the toptrading() function will not work. As a result, we'll have to use a for-loop function.
-    -   *The problem with this option:* Doing each day's assignment independently may result in people having to change desks from day to day. Some folks may prefer having the same desk every day they come in over having a certain desk.
--   Simple Question 1 and 2 require granular desk selection (i.e. a preference for a specific desk, rather than a desk which meets certain qualifications), which may not be feasible?
 
-## Major Tasks
+-   There may be a preference for proximity to entrance/exit/bathrooms/kitchen/etc.; (fixed physical locations in lab)
+
+-   I'm currently ignoring accommodations
+
+    -   I imagine these folks would go through a preliminary selection process; we would simply remove them as desk selectors and remove their desk as an option
+
+## Task Overview
 
 -   Gather preferences (Data Input)
 
     -   Identify which days of the week a staff member plans to come in, their preferred darkness, and their preferred row position
+    
+    -   Add in considerations for team proximity (i.e., Do they want to be close to teammates? What team(s) are they on?)
 
     -   Weigh preferences according to organizational importance and staff member's personal preference
 
@@ -71,3 +64,25 @@ Create an office seating chart for each day of the week based on staff's prefere
 -   Create seating assignments for each day of the week (Data Output)
 
 -   Create seating charts for each day of the week (Visualization)
+
+## Trying things out
+
+-   **The Simple Option**:
+    -   The first 30 staff members rank each available desk (yep, all 30).
+    -   Using the "toptrading()" function from the matchingR package, assign those 30 members a desk.
+    -   The subsequent 8 staff members can then fill in wherever there is availability (as earlier staff reveal which days they don't intend to be in office).
+    -   *The problem with this option:* Some of the initial 30 staff members may prefer to share a desk over getting their own desk, if the shared desk better aligns with their preferences.
+        -   Adding on to this: this option doesn't consider days-in-office. Thus, simple option 2.
+-   **Simple Option 2:**
+    -   For each day of the week, staff members planning to come in on that day rank each available desk (all 30, unless there are only x number of people coming in, in which case they only need to rank the top x desks).
+        -   If there are fewer than 30 people coming in, the toptrading() function will not work. As a result, we'll have to use a for-loop function.
+    -   *The problem with this option:* Doing each day's assignment independently may result in people having to change desks from day to day. Some folks may prefer having the same desk every day they come in over having a certain desk.
+
+Simple Option 1 and 2 require granular desk selection (i.e. a preference for a specific desk, rather than a desk which meets certain qualifications), which may not be feasible or the best method. Let's try utility./
+
+-     **Option 3:**
+
+  -   Linear Programming/Assignment Problem/
+    -   Based on an individual's preferences, there is a "cost" associated with each desk, such that their most preferred desk would cost the least, and their least preferred desk would cost the most.
+    
+
